@@ -1,3 +1,9 @@
 forums/
 list_of_drugs
 db.json
+stopwords
+contraction-expansion.json
+not_drug_names
+list_of_effects
+drug_misnaming.json
+drug-taxonomy.json
