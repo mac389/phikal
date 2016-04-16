@@ -47,6 +47,10 @@ def valid_word(token):
 
 def process(string_of_text):
 	string_of_text = string_of_text.encode('utf-8').decode('ascii','ignore')
+	
+	''' HAVE TO REDO THIS. MUST EXTRACT DRUG NAMES BEFORE REMOVING NUMBERS
+			DON'T WANT TO MISS TYLENOL 3. (OR JUST SEARCH FOR THIS?)'''
+
 	'''	
 		Uses NLTK word_tokenize.
 		Converts to lowercase. 
