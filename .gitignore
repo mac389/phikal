@@ -7,3 +7,4 @@ not_drug_names
 list_of_effects
 drug_misnaming.json
 drug-taxonomy.json
+backup/
