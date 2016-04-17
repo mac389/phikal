@@ -1,1 +1,1 @@
-cat db.json | jq '.[] | .text' | python process-text.py
+cat db.json | jq ".[] | .text" | head -1 | python "db<-drugs-and-processed-text.py"

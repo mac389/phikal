@@ -1,9 +1,10 @@
-import json, nltk, string, itertools
+import json, nltk, string, itertools, sys
 
 
 from awesome_print import ap 
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import wordnet
+from nltk.util import ngrams
 
 '''
 Consider using TextBlob 
@@ -12,7 +13,6 @@ from textblob_aptagger import PerceptronTagger
 '''
 READ = 'rb'
 WRITE = 'wb'
-db = json.load(open('db.json',READ))
 stopwords = set(open('stopwords',READ)) | set(nltk.corpus.stopwords.words('english'))
 punctuation = string.punctuation + "`'"
 contraction_expansion = json.load(open('contraction-expansion.json',READ))
@@ -46,7 +46,7 @@ def valid_word(token):
 	return all([ch.isalpha() for ch in token])
 
 def process(string_of_text):
-	string_of_text = string_of_text.encode('utf-8').decode('ascii','ignore')
+	string_of_text = string_of_text.decode('utf-8').encode('ascii','ignore')
 	
 	''' HAVE TO REDO THIS. MUST EXTRACT DRUG NAMES BEFORE REMOVING NUMBERS
 			DON'T WANT TO MISS TYLENOL 3. (OR JUST SEARCH FOR THIS?)'''
@@ -63,6 +63,12 @@ def process(string_of_text):
 	bag_of_words =  [contraction_expansion[token].split() if token in contraction_expansion else token
 				for token in nltk.word_tokenize(string_of_text.lower())]
 	
+	sys.std.out(string_of_text)
+	'''
+	#bag_of_words += ngrams(bag_of_words,2)
+
+	ap(bag_of_words)
+
 	#flatten after contraction expansion
 	bag_of_words = list(flatten(bag_of_words))
 	bag_of_words = [word for word in bag_of_words
@@ -70,7 +76,7 @@ def process(string_of_text):
 
 	bag_of_words = [lmtzr.lemmatize(word,pos=get_wordnet_pos(pos)) 
 		for word,pos in nltk.pos_tag(bag_of_words)]
-
+	'''
 	return bag_of_words
 	#Will pos tagging help?
 
@@ -81,8 +87,7 @@ def identify_drugs(list_of_tokens):
 
 #Here is the easiest place to correct misspellings
 
-for title in list(db.iterkeys()):
-	db[title]['processed-text'] = process(db[title]['text'])
-	db[title]['drugs'] = identify_drugs(db[title]['processed-text'])
-
-json.dump(db,open('db.json',WRITE))
+for text in sys.stdin:
+	sys.stdout.write("\n")
+	sys.stdout.write(process(text))
+	sys.stdout.write("\n")
