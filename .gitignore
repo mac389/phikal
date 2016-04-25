@@ -9,3 +9,5 @@ drug_misnaming.json
 drug-taxonomy.json
 backup/
 db-old.json
+comention-matrix.tsv
+correlation-matrix.tsv

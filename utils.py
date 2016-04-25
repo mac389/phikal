@@ -1,3 +1,6 @@
+import json
+
+READ = 'rb'
 
 def flatten(foo):
     for x in foo:
@@ -7,15 +10,5 @@ def flatten(foo):
         else:
             yield x
 
-def load_json(filename,key):
-    with open(filename, 'r') as fd:
-        parser = ijson.parse(fd)
-        ret = {'text': {}}
-        for prefix, event, value in parser:
-            if (prefix, event) == ('builders', 'map_key'):
-                buildername = value
-                ret['builders'][buildername] = {}
-            elif prefix.endswith('.shortname'):
-                ret['builders'][buildername]['shortname'] = value
-
-        return ret
+def find_ngrams(input_list, n):
+  return zip(*[input_list[i:] for i in range(n)])
