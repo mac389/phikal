@@ -1,1 +1,0 @@
-cat db.json | jq ".[]" | head -15
