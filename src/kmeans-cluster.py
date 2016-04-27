@@ -1,8 +1,9 @@
-import json
+import json, brewer2mpl
 
 import numpy as np 
 import matplotlib.pyplot as plt 
 import Graphics as artist
+import utils as tech 
 
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
@@ -12,6 +13,7 @@ from matplotlib import rcParams
 from sys import argv
 
 filename = argv[1]
+nclus = argv[2]
 rcParams['text.usetex'] = True
 drugs = open('../data/master-drug-list').read().splitlines()
 labels = json.load(open('../data/%s-matrix-kmeans-cluster-labels.json'%filename,'rb'))
@@ -27,8 +29,16 @@ artist.adjust_spines(axs[0])
 axs[0].set_xlabel(artist.format('PC 1'))
 axs[0].set_ylabel(artist.format('PC 2'))
 #overlay clustering on right
-colors = ['k' if label == 1 else 'w' for label in labels["2"]["labels"]]
-shapes = ['o' if color == 'k' else 's' for color in colors]
+
+if filename != 'taxonomy':
+	colors = ['k' if label == 1 else 'w' for label in labels[nclus]["labels"]]
+	shapes = ['o' if color == 'k' else 's' for color in colors]
+
+else:
+	color = brewer2mpl.get_map('Set2', 'qualitative', 8).mpl_colors
+	shape = ['o','s','*','x','D']
+	colors = [color[label] for label in labels[nclus]["labels"]]
+	shapes = [shape[label%len(shape)] for label in labels[nclus]["labels"]]
 for x,y,c,s in zip(X[:,0],X[:,1],colors,shapes):
 	axs[1].scatter(x,y,marker=s,c=c,alpha=0.8)
 artist.adjust_spines(axs[1])

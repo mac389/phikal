@@ -18,10 +18,10 @@ X = pca.fit_transform(data)
 
 silhouettes = {}
 to_save = {}
-for nclus in xrange(2,6):
+for nclus in xrange(2,8):
 	kmeans = KMeans(n_clusters=nclus,n_init=20)
-	kmeans.fit(X)
-	labels = kmeans.predict(X)
+	kmeans.fit(X[:,:2])
+	labels = kmeans.predict(X[:,:2])
 
 	silhouettes[nclus]=silhouette_score(X,labels)
 	to_save[nclus] = {"silhouette_score":silhouettes[nclus],
@@ -33,7 +33,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 clusters,scores = zip(*sorted(silhouettes.items(),
-				key=lambda item: item[1],reverse=True))
+				key=lambda item: item[0],reverse=True))
 
 ax.plot(clusters, scores,'k.--',linewidth=2,markersize=20)
 artist.adjust_spines(ax)
