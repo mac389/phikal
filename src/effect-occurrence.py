@@ -33,10 +33,11 @@ json.dump({'expected occurrence':len(db)/float(len(effects)),
 
 #--- Exclude effects that never occurred 
 
-idx = [i for i,effect in enumerate(effects) if tally[effect]>0]
+idx = [i for i,effect in enumerate(effects) if tally[effect]>200]
 better_m = m[idx,:]
 
-np.savetxt('../data/effect-matrix-actually-occurred.tsv',better_m,delimiter='\t')
+np.savetxt('../data/effect-matrix-actually-occurred.tsv',better_m,
+	delimiter='\t', format='%d')
 
 with open('../data/effects-that-actually-occurred','wb') as fid:
 	for i in idx:
