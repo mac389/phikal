@@ -19,9 +19,9 @@ X = pca.fit_transform(data)
 silhouettes = {}
 to_save = {}
 for nclus in xrange(2,8):
-	kmeans = KMeans(n_clusters=nclus,n_init=20)
-	kmeans.fit(X[:,:2])
-	labels = kmeans.predict(X[:,:2])
+	kmeans = KMeans(n_clusters=nclus,n_init=4)
+	kmeans.fit(X)
+	labels = kmeans.predict(X)
 
 	silhouettes[nclus]=silhouette_score(X,labels)
 	to_save[nclus] = {"silhouette_score":silhouettes[nclus],

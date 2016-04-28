@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import Graphics as artist
 import utils as tech 
 
+from collections import Counter
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
@@ -30,7 +31,7 @@ axs[0].set_xlabel(artist.format('PC 1'))
 axs[0].set_ylabel(artist.format('PC 2'))
 #overlay clustering on right
 
-if filename != 'taxonomy':
+if filename != 'taxonomy' and filename != 'effect-correlation':
 	colors = ['k' if label == 1 else 'w' for label in labels[nclus]["labels"]]
 	shapes = ['o' if color == 'k' else 's' for color in colors]
 
@@ -39,6 +40,7 @@ else:
 	shape = ['o','s','*','x','D']
 	colors = [color[label] for label in labels[nclus]["labels"]]
 	shapes = [shape[label%len(shape)] for label in labels[nclus]["labels"]]
+print Counter(colors)
 for x,y,c,s in zip(X[:,0],X[:,1],colors,shapes):
 	axs[1].scatter(x,y,marker=s,c=c,alpha=0.8)
 artist.adjust_spines(axs[1])
