@@ -13,6 +13,13 @@ def flatten(foo):
         else:
             yield x
 
+def matrix_jaccard(m,jacc):
+    idx = np.tril_indices_from(jacc)
+    for i,j in zip(*idx):
+        jacc[i,j] = jaccard(m[i,:],m[j,:])
+    jacc += np.tril(jacc,k=-1).T
+    return jacc
+
 def find_ngrams(input_list, n):
   return zip(*[input_list[i:] for i in range(n)])
 
@@ -27,3 +34,7 @@ def discrete_cmap(N, base_cmap=None):
     color_list = base(np.linspace(0, 1, N))
     cmap_name = base.name + str(N)
     return base.from_list(cmap_name, color_list, N)
+
+def jaccard(one,two):
+    return np.logical_and(one,two).sum()/float(np.logical_or(one,two).sum())
+
