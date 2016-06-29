@@ -1,6 +1,7 @@
 \documentclass{article}
-\usepackage{enumitem,graphicx,xcolor, booktabs}
+\usepackage{enumitem,graphicx,xcolor, booktabs,tikz}
 \usepackage[colorlinks=true, urlcolor=black, linkcolor=black,citecolor=black]{hyperref}
+\usetikzlibrary{positioning, arrows}
 \usepackage[margin=1in]{geometry}
 \usepackage[]{units}
 \begin{document}
@@ -25,6 +26,70 @@
 \emph{Preprocessing of data}	
  	
 \emph{Analysis of data} To quantify how similar the drugs were in two documents we used the Jaccard similarity (citation). The Jaccard similarity between two objects is the ratio of the components those objects share in common to the number of unique elements in either object. It is the ratio of intersection of the sets of components of two objects to the union. We chose Jaccard similarity over cosine distance because cosine distance considers two objects with binary features similar if they both lack the same feature. It did not seem reasonable to consider to posts related if they both failed to mention one of $802$ drugs. 
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+   \node (collect-data) {Collect data from Lycaeum};
+   \node[right = of collect-data] (preprocess)
+   {
+   	\begin{minipage}{0.5\textwidth}
+   		Preprocess
+   		\begin{enumerate}[leftmargin=*]
+   			\item[] Remove stopwords, Convert to lowercase
+   			\item[] Lemmatize
+   		\end{enumerate}
+   	\end{minipage}
+   };
+   
+   \node[below = 5em of collect-data] (drug-effect-matrix) 
+   {
+   	\begin{minipage}{0.3\textwidth}
+   	 Construct drug-effect matrix.\\
+   	 \emph{Picture of sample matrix}.	
+   	 \end{minipage}
+   };
+   
+   \node[below = of preprocess] (drug-drug-matrix)
+   {
+   	\begin{minipage}{0.3\textwidth}
+   	Construct drug-drug matrix\\
+   	\emph{picture of drug-effect times drug-effect-transpose}
+   	\end{minipage}
+   };
+   
+   \node[below = of drug-effect-matrix] (effect-effect-matrix)
+   {
+   	\begin{minipage}{0.3\textwidth}
+   	Construct drug-drug matrix\\
+   	\emph{picture of drug-effect times drug-effect-transpose}
+   	\end{minipage}
+   };
+   
+   \node[below = of drug-drug-matrix]
+   {
+   	\begin{minipage}{0.4\textwidth}
+   	For each matrix:
+   	\begin{enumerate}[leftmargin=*]
+   		\item[] Calculate Jaccard similarity
+   		\item[] Cluster triangle below diagonal 
+   		\item[] Bonferroni correct for multiple hypotheses $\left(\frac{n\left(n-1\right)}{2}\right)$, $n$ is number of 
+   		drugs or effects. 
+   	\end{enumerate}
+   	\end{minipage}
+   };
+   
+   
+   \draw[->,ultra thick] (collect-data) -- (preprocess);
+   \draw[->, ultra thick] (preprocess.south west) -- (drug-effect-matrix.north);
+   \draw[->, ultra thick] (drug-effect-matrix) -- (drug-drug-matrix);
+   \draw[->, ultra thick] (drug-effect-matrix) -- (effect-effect-matrix);
+   
+   
+\end{tikzpicture}
+\caption{So much bob. \label{fig:flowchart}}
+\end{figure}
+
  
 \section*{Results}
 
