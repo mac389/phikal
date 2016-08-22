@@ -14,13 +14,16 @@ cutoff = 60
 
 r = np.corrcoef(data)
 df = pd.DataFrame(r,index=drugs,columns=drugs)
+#df.to_csv('../data/lda_occurences.csv')
+print df[df>0.9]
+'''
 sns.set(font_scale=0.8)
 g = sns.clustermap(df,figsize=(19,19))
 plt.setp(g.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
 plt.setp(g.ax_heatmap.xaxis.get_majorticklabels(), rotation='vertical')
 
 g.savefig('../imgs/cluster-drug-drug-correlation-by-topic.png')
-
+'''
 '''
 fig = plt.figure()
 ax = fig.add_subplot(111)
