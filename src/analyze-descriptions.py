@@ -11,21 +11,30 @@ freqs = json.load(open(os.path.join('..','data','descriptions.json'),'rb'))
 
 def plot(aList,ax, cutoff=20):
 	tokens,frequencies = zip(*sorted(aList,key=lambda item:item[1],reverse=True))
-	ax.plot(frequencies[:cutoff],'k--')
+
+	tokens = tokens[:cutoff][::-1]
+	frequencies = frequencies[:cutoff][::-1]
+
+	ax.plot(frequencies,xrange(cutoff),'k--', linewidth=2)
 	artist.adjust_spines(ax)
-	ax.set_xticks(xrange(cutoff))
-	ax.set_xticklabels(map(artist.format,tokens[:cutoff]),rotation='vertical')
+	ax.set_yticks(xrange(cutoff))
+	ax.set_yticklabels(map(artist.format,tokens),rotation='horizontal')
 
 common_drugs,_ = zip(*freqs["both"].items())
 
-fig,axs = plt.subplots(nrows=3,sharey=True)
-for drug,ax in zip(["both","lsd","mdma"],axs):
+for drug in ["both","lsd","mdma"]:
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
 	if drug == "both":
 		plot(freqs["both"].iteritems(),ax)
 	else:
 		f = [(token,frequency) for token,frequency in freqs[drug].iteritems()
 				if token not in common_drugs]
+		with open(os.path.join('..','data','exclusive-mentions-%s'%drug),'wb') as fid:
+			for token,frequency in sorted(f,key = lambda item:item[1], reverse=True):
+				print>>fid, '%s (%d)'%(token,frequency)
 		plot(f,ax)
+	plt.tight_layout()
+	plt.savefig(os.path.join('..','imgs',"%s.png"%drug))
 
-plt.tight_layout()
-plt.show()
+	del fig, ax
