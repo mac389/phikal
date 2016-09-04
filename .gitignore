@@ -13,3 +13,4 @@ comention-matrix.tsv
 correlation-matrix.tsv
 db-backup.json
 data/
+backup/
