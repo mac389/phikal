@@ -1,3 +1,6 @@
 [submodule "cmx.js.wiki"]
 	path = cmx.js.wiki
 	url = https://github.com/darwin/cmx.js.wiki.git
+[submodule "cmx.js"]
+	path = cmx.js
+	url = https://github.com/mac389/cmx.js.git
